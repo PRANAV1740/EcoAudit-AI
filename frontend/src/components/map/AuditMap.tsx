@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
-import type { TreeSample, RiskClass } from "@/lib/types";
+import type { TreeSample, RiskClass, ZoneProperties } from "@/lib/types";
+import type * as Leaflet from "leaflet";
 
 interface AuditMapProps {
   geoJsonData: GeoJSON.FeatureCollection | null;
@@ -11,7 +12,7 @@ interface AuditMapProps {
   showZones: boolean;
   showTrees: boolean;
   onSelectTree?: (tree: TreeSample | null) => void;
-  onSelectZone?: (zone: any | null) => void;
+  onSelectZone?: (zone: ZoneProperties | null) => void;
 }
 
 export default function AuditMap({
@@ -24,9 +25,9 @@ export default function AuditMap({
   onSelectZone,
 }: AuditMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const zonesLayerGroupRef = useRef<any>(null);
-  const treesLayerGroupRef = useRef<any>(null);
+  const mapInstanceRef = useRef<Leaflet.Map | null>(null);
+  const zonesLayerGroupRef = useRef<Leaflet.LayerGroup | null>(null);
+  const treesLayerGroupRef = useRef<Leaflet.LayerGroup | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Initialize Leaflet map
@@ -85,14 +86,14 @@ export default function AuditMap({
       const L = (await import("leaflet")).default;
       if (!isMounted) return;
 
-      // ── Update Zone Polygons ──────────────────────────────────
+      // â”€â”€ Update Zone Polygons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       if (zonesLayerGroupRef.current) {
         zonesLayerGroupRef.current.clearLayers();
 
         if (showZones && geoJsonData) {
-          geoJsonData.features.forEach((feature: any) => {
-            if (feature.geometry.type === "Polygon") {
-              const props = feature.properties || {};
+          geoJsonData.features.forEach((feature) => {
+            if (feature.geometry?.type === "Polygon") {
+              const props = (feature.properties ?? {}) as ZoneProperties;
               const zoneType = props.zone_type as RiskClass;
 
               // Filter check
@@ -132,8 +133,8 @@ export default function AuditMap({
                     ${props.description || ""}
                   </p>
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 8px;">
-                    <div><span style="color: #64748b;">Trees:</span> <strong>${props.tree_count || "—"}</strong></div>
-                    <div><span style="color: #64748b;">Avg Health:</span> <strong>${props.avg_health_score || "—"}/100</strong></div>
+                    <div><span style="color: #64748b;">Trees:</span> <strong>${props.tree_count || "â€”"}</strong></div>
+                    <div><span style="color: #64748b;">Avg Health:</span> <strong>${props.avg_health_score || "â€”"}/100</strong></div>
                   </div>
                 </div>
               `;
@@ -144,13 +145,15 @@ export default function AuditMap({
                 if (onSelectZone) onSelectZone(props);
               });
 
-              polygonLayer.addTo(zonesLayerGroupRef.current);
+              if (zonesLayerGroupRef.current) {
+                polygonLayer.addTo(zonesLayerGroupRef.current);
+              }
             }
           });
         }
       }
 
-      // ── Update Tree Point Markers ─────────────────────────────
+      // â”€â”€ Update Tree Point Markers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       if (treesLayerGroupRef.current) {
         treesLayerGroupRef.current.clearLayers();
 
@@ -216,7 +219,9 @@ export default function AuditMap({
               if (onSelectTree) onSelectTree(tree);
             });
 
-            marker.addTo(treesLayerGroupRef.current);
+            if (treesLayerGroupRef.current) {
+              marker.addTo(treesLayerGroupRef.current);
+            }
           });
         }
       }
@@ -278,3 +283,5 @@ export default function AuditMap({
     </div>
   );
 }
+
+

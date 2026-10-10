@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { getReports, createReport } from "@/lib/api";
-import type { ActionReport, RiskClass, Priority, ReportStatus } from "@/lib/types";
+import type { ActionReport, RiskClass, Priority } from "@/lib/types";
 import { PRIORITY_COLORS, STATUS_LABELS, STATUS_COLORS } from "@/lib/constants";
 
 export default function ReportsPage() {
@@ -221,7 +221,7 @@ export default function ReportsPage() {
                       </span>
                       {report.recommendations.map((rec, idx) => (
                         <div key={idx} className="flex items-start gap-2 text-xs text-text-primary">
-                          <span className="text-accent font-bold">›</span>
+                          <span className="text-accent font-bold">â€º</span>
                           <span className="leading-snug">{rec}</span>
                         </div>
                       ))}
@@ -249,7 +249,7 @@ export default function ReportsPage() {
               onClick={() => setIsModalOpen(false)}
               className="absolute top-4 right-4 p-2 text-text-muted hover:text-text-primary rounded-lg hover:bg-bg-card-hover"
             >
-              ✕
+              âœ•
             </button>
 
             <h3 className="text-lg font-bold text-text-primary mb-1">Issue New Action Order</h3>
@@ -265,7 +265,7 @@ export default function ReportsPage() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Copper Hydroxide Spraying — Block 2"
+                  placeholder="e.g. Copper Hydroxide Spraying â€” Block 2"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl bg-bg-secondary border border-border text-text-primary focus:outline-none focus:border-accent"
@@ -349,3 +349,5 @@ export default function ReportsPage() {
     </div>
   );
 }
+
+

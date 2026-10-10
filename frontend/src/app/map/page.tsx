@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { getZonesGeoJSON, getTrees } from "@/lib/api";
-import type { TreeSample, RiskClass } from "@/lib/types";
+import type { TreeSample, RiskClass, ZoneProperties } from "@/lib/types";
 
 // Dynamic import with SSR disabled for Leaflet
 const AuditMap = dynamic(() => import("@/components/map/AuditMap"), {
@@ -23,12 +23,10 @@ export default function MapPage() {
   const [showZones, setShowZones] = useState(true);
   const [showTrees, setShowTrees] = useState(true);
   const [selectedTree, setSelectedTree] = useState<TreeSample | null>(null);
-  const [selectedZone, setSelectedZone] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [selectedZone, setSelectedZone] = useState<ZoneProperties | null>(null);
 
   useEffect(() => {
     async function loadData() {
-      setIsLoading(true);
       try {
         const [geojson, treeList] = await Promise.all([
           getZonesGeoJSON(),
@@ -39,7 +37,6 @@ export default function MapPage() {
       } catch (err) {
         console.error("Error loading map data:", err);
       } finally {
-        setIsLoading(false);
       }
     }
     loadData();
@@ -90,7 +87,7 @@ export default function MapPage() {
                   : "text-text-muted hover:text-text-secondary"
               }`}
             >
-              Polygons {showZones ? "✓" : "✕"}
+              Polygons {showZones ? "âœ“" : "âœ•"}
             </button>
             <button
               onClick={() => setShowTrees(!showTrees)}
@@ -100,7 +97,7 @@ export default function MapPage() {
                   : "text-text-muted hover:text-text-secondary"
               }`}
             >
-              Trees {showTrees ? "✓" : "✕"}
+              Trees {showTrees ? "âœ“" : "âœ•"}
             </button>
           </div>
         </div>
@@ -174,19 +171,19 @@ export default function MapPage() {
                   <div className="flex justify-between">
                     <span className="text-text-muted">Canopy Density</span>
                     <span className="font-mono text-text-secondary">
-                      {selectedTree.canopy_cover_pct || "—"}%
+                      {selectedTree.canopy_cover_pct || "â€”"}%
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-text-muted">Diameter (DBH)</span>
                     <span className="font-mono text-text-secondary">
-                      {selectedTree.diameter_cm ? `${selectedTree.diameter_cm} cm` : "—"}
+                      {selectedTree.diameter_cm ? `${selectedTree.diameter_cm} cm` : "â€”"}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-text-muted">Height</span>
                     <span className="font-mono text-text-secondary">
-                      {selectedTree.height_m ? `${selectedTree.height_m} m` : "—"}
+                      {selectedTree.height_m ? `${selectedTree.height_m} m` : "â€”"}
                     </span>
                   </div>
                 </div>
@@ -289,3 +286,5 @@ export default function MapPage() {
     </div>
   );
 }
+
+

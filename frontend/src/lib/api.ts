@@ -1,5 +1,5 @@
-/**
- * EcoAudit AI — API Client
+﻿/**
+ * EcoAudit AI â€” API Client
  *
  * Centralized API calls to the FastAPI backend.
  * Gracefully falls back to local demo datasets if the backend is unreachable,
@@ -64,7 +64,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   }
 }
 
-// ── Health ───────────────────────────────────────────────────────────────
+// â”€â”€ Health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getHealth(): Promise<HealthResponse> {
   try {
@@ -83,7 +83,7 @@ export async function getHealth(): Promise<HealthResponse> {
   }
 }
 
-// ── Audits ──────────────────────────────────────────────────────────────
+// â”€â”€ Audits â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getAuditSummary(): Promise<AuditSummary> {
   try {
@@ -94,7 +94,7 @@ export async function getAuditSummary(): Promise<AuditSummary> {
   }
 }
 
-// ── Trees ───────────────────────────────────────────────────────────────
+// â”€â”€ Trees â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function getTrees(): Promise<TreeSample[]> {
   try {
@@ -115,99 +115,56 @@ export async function getTree(treeId: string): Promise<TreeSample> {
   }
 }
 
-// ── Photos ──────────────────────────────────────────────────────────────
+// â”€â”€ Photos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 
 export async function uploadPhoto(file: File): Promise<PhotoUploadResponse> {
   const formData = new FormData();
   formData.append("file", file);
 
   const url = `${API_BASE}/photos/upload`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const detail = await res.text().catch(() => res.statusText);
+    throw new ApiError(
+      res.status,
+      `Upload failed: ${detail}`,
+    );
+  }
+
+  return await res.json();
+}
+
+// â”€â”€ Zones (GeoJSON) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+export async function getZonesGeoJSON(): Promise<GeoJSON.FeatureCollection> {
   try {
-    const res = await fetch(url, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!res.ok) {
-      const detail = await res.text().catch(() => res.statusText);
-      throw new ApiError(res.status, `Upload failed: ${detail}`);
-    }
-
-    return await res.json();
+    return await request<GeoJSON.FeatureCollection>("/zones/geojson");
   } catch (err) {
-    console.warn("Backend photo upload failed or offline; synthesizing mock photo record", err);
-    // Simulate successful photo record for presentation resilience
-    const mockId = `photo_${Date.now()}`;
-    return {
-      id: mockId,
-      filename: `${mockId}_${file.name}`,
-      original_filename: file.name,
-      file_size_bytes: file.size,
-      content_type: file.type || "image/jpeg",
-      uploaded_at: new Date().toISOString(),
-      has_gps: true,
-      exif_data: {
-        camera_make: "DJI Mavic 3 Enterprise",
-        camera_model: "Hasselblad L2D-20c",
-        datetime_original: new Date().toISOString(),
-        gps_coords: {
-          latitude: 3.1075,
-          longitude: 101.7042,
-          altitude: 48.5,
-        },
-        image_width: 5280,
-        image_height: 3956,
-      },
-      message: "Photo uploaded and processed successfully (Demonstration fallback)",
-    };
+    console.warn("Backend unavailable, using mock geojson", err);
+    return MOCK_GEOJSON;
   }
 }
 
+
+
+
+// Photos
 export async function getPhotos(): Promise<PhotoRecord[]> {
   try {
     return await request<PhotoRecord[]>("/photos");
-  } catch {
-    return [
-      {
-        id: "p001",
-        filename: "p001_palm_canopy_rgb.jpg",
-        original_filename: "palm_canopy_rgb.jpg",
-        file_size_bytes: 3450000,
-        content_type: "image/jpeg",
-        uploaded_at: "2026-10-09T11:20:00Z",
-        has_gps: true,
-        exif_data: {
-          camera_make: "DJI",
-          camera_model: "Mavic 3E",
-          datetime_original: "2026-10-09T11:15:30Z",
-          gps_coords: { latitude: 3.1085, longitude: 101.7095, altitude: 45.0 },
-          image_width: 4000,
-          image_height: 3000,
-        },
-      },
-      {
-        id: "p002",
-        filename: "p002_ganoderma_bracket_close.jpg",
-        original_filename: "ganoderma_bracket_close.jpg",
-        file_size_bytes: 2890000,
-        content_type: "image/jpeg",
-        uploaded_at: "2026-10-08T15:10:00Z",
-        has_gps: true,
-        exif_data: {
-          camera_make: "Sony",
-          camera_model: "ILCE-7M4",
-          datetime_original: "2026-10-08T14:45:10Z",
-          gps_coords: { latitude: 3.0995, longitude: 101.7055, altitude: 38.2 },
-          image_width: 6000,
-          image_height: 4000,
-        },
-      },
-    ];
+  } catch (err) {
+    console.warn("Backend unavailable, returning no photos", err);
+    return [];
   }
 }
 
-// ── Reports ─────────────────────────────────────────────────────────────
-
+// Action Reports
 export async function getReports(): Promise<ActionReport[]> {
   try {
     return await request<ActionReport[]>("/reports");
@@ -225,30 +182,19 @@ export async function createReport(
       method: "POST",
       body: JSON.stringify(data),
     });
-  } catch {
-    const newReport: ActionReport = {
-      id: `R${String(MOCK_REPORTS.length + 1).padStart(3, "0")}`,
+  } catch (err) {
+    console.warn("Backend unavailable, creating a demo report", err);
+
+    return {
+      id: `R-${Date.now()}`,
       title: data.title,
       description: data.description,
       zone: data.zone,
-      priority: data.priority || "medium",
+      priority: data.priority ?? "medium",
       status: "pending",
-      recommendations: data.recommendations || [],
+      recommendations: data.recommendations ?? [],
       created_at: new Date().toISOString(),
       is_demo_data: true,
     };
-    MOCK_REPORTS.unshift(newReport);
-    return newReport;
-  }
-}
-
-// ── Zones (GeoJSON) ────────────────────────────────────────────────────
-
-export async function getZonesGeoJSON(): Promise<GeoJSON.FeatureCollection> {
-  try {
-    return await request<GeoJSON.FeatureCollection>("/zones/geojson");
-  } catch (err) {
-    console.warn("Backend unavailable, using mock geojson", err);
-    return MOCK_GEOJSON;
   }
 }

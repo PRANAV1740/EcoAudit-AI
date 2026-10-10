@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import { uploadPhoto, getPhotos } from "@/lib/api";
@@ -63,8 +63,8 @@ export default function UploadPage() {
       setUploadResult(res);
       setPhotos((prev) => [res, ...prev]);
       setSelectedFile(null);
-    } catch (err: any) {
-      setErrorMessage(err.message || "Failed to process photo upload.");
+    } catch (err: unknown) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to process photo upload.");
     } finally {
       setIsUploading(false);
     }
@@ -142,7 +142,7 @@ export default function UploadPage() {
                     {selectedFile.name}
                   </span>
                   <span className="text-xs text-text-muted mt-1 block">
-                    {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB · Ready to upload
+                    {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB Â· Ready to upload
                   </span>
                 </div>
               ) : (
@@ -211,17 +211,17 @@ export default function UploadPage() {
                   )}
                   {uploadResult.exif_data.gps_coords ? (
                     <div className="text-emerald-400">
-                      GPS: {uploadResult.exif_data.gps_coords.latitude.toFixed(5)}°N, {uploadResult.exif_data.gps_coords.longitude.toFixed(5)}°E
+                      GPS: {uploadResult.exif_data.gps_coords.latitude.toFixed(5)}Â°N, {uploadResult.exif_data.gps_coords.longitude.toFixed(5)}Â°E
                     </div>
                   ) : (
                     <div className="text-amber-400 font-sans">
-                      ⚠️ No GPS metadata found in EXIF — tree location will require manual coordinates.
+                      âš ï¸ No GPS metadata found in EXIF â€” tree location will require manual coordinates.
                     </div>
                   )}
                 </div>
               ) : (
                 <div className="text-amber-400 font-sans">
-                  ⚠️ No EXIF metadata detected in image.
+                  âš ï¸ No EXIF metadata detected in image.
                 </div>
               )}
             </div>
@@ -266,7 +266,7 @@ export default function UploadPage() {
                           {photo.original_filename || photo.filename}
                         </span>
                         <span className="text-[11px] text-text-muted font-mono">
-                          ID: {photo.id} · {(photo.file_size_bytes / (1024 * 1024)).toFixed(2)} MB
+                          ID: {photo.id} Â· {(photo.file_size_bytes / (1024 * 1024)).toFixed(2)} MB
                         </span>
                       </div>
                       <span
@@ -291,14 +291,14 @@ export default function UploadPage() {
                           <span className="truncate block">
                             {photo.exif_data.datetime_original
                               ? new Date(photo.exif_data.datetime_original).toLocaleDateString()
-                              : "—"}
+                              : "â€”"}
                           </span>
                         </div>
                         <div>
                           <span className="text-[10px] text-text-muted uppercase block font-sans">Coordinates</span>
                           <span className="truncate block text-accent">
                             {photo.exif_data.gps_coords
-                              ? `${photo.exif_data.gps_coords.latitude.toFixed(3)}°, ${photo.exif_data.gps_coords.longitude.toFixed(3)}°`
+                              ? `${photo.exif_data.gps_coords.latitude.toFixed(3)}Â°, ${photo.exif_data.gps_coords.longitude.toFixed(3)}Â°`
                               : "Missing GPS"}
                           </span>
                         </div>
@@ -314,3 +314,5 @@ export default function UploadPage() {
     </div>
   );
 }
+
+
