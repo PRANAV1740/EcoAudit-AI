@@ -1,0 +1,128 @@
+[
+  {
+    "id": "T001", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1085, "longitude": 101.7095, "health_score": 92,
+    "risk_class": "good", "diameter_cm": 45.2, "height_m": 12.5,
+    "canopy_cover_pct": 85, "notes": "Mature, healthy fronds — full canopy",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T002", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1078, "longitude": 101.7105, "health_score": 88,
+    "risk_class": "good", "diameter_cm": 42.1, "height_m": 11.8,
+    "canopy_cover_pct": 80, "notes": "Strong growth, no visible damage",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T003", "species": "Coconut Palm (Cocos nucifera)",
+    "latitude": 3.1090, "longitude": 101.7115, "health_score": 85,
+    "risk_class": "good", "diameter_cm": 38.5, "height_m": 14.2,
+    "canopy_cover_pct": 75, "notes": "Healthy coconut palm, good fruit yield",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T004", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1072, "longitude": 101.7090, "health_score": 78,
+    "risk_class": "good", "diameter_cm": 40.0, "height_m": 10.9,
+    "canopy_cover_pct": 72, "notes": "Minor yellowing on lower fronds",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T005", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1082, "longitude": 101.7120, "health_score": 75,
+    "risk_class": "good", "diameter_cm": 44.8, "height_m": 13.1,
+    "canopy_cover_pct": 78, "notes": "Good overall condition",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T006", "species": "Rubber Tree (Hevea brasiliensis)",
+    "latitude": 3.1095, "longitude": 101.7100, "health_score": 72,
+    "risk_class": "good", "diameter_cm": 35.2, "height_m": 18.5,
+    "canopy_cover_pct": 68, "notes": "Healthy rubber tree, active tapping",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T007", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1055, "longitude": 101.6975, "health_score": 62,
+    "risk_class": "risky", "diameter_cm": 39.4, "height_m": 11.2,
+    "canopy_cover_pct": 55, "notes": "Moderate yellowing, possible nutrient deficiency",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T008", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1048, "longitude": 101.6985, "health_score": 58,
+    "risk_class": "risky", "diameter_cm": 37.8, "height_m": 10.5,
+    "canopy_cover_pct": 50, "notes": "Reduced canopy, frond drying observed",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T009", "species": "Coconut Palm (Cocos nucifera)",
+    "latitude": 3.1060, "longitude": 101.6968, "health_score": 55,
+    "risk_class": "risky", "diameter_cm": 33.1, "height_m": 12.8,
+    "canopy_cover_pct": 48, "notes": "Crown showing early stress signs",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T010", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1042, "longitude": 101.6972, "health_score": 48,
+    "risk_class": "risky", "diameter_cm": 41.2, "height_m": 9.8,
+    "canopy_cover_pct": 42, "notes": "Significant yellowing, soil compaction suspected",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T011", "species": "Rubber Tree (Hevea brasiliensis)",
+    "latitude": 3.1052, "longitude": 101.6990, "health_score": 45,
+    "risk_class": "risky", "diameter_cm": 30.5, "height_m": 15.2,
+    "canopy_cover_pct": 40, "notes": "Bark disease starting, reduced latex yield",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T012", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1065, "longitude": 101.6960, "health_score": 42,
+    "risk_class": "risky", "diameter_cm": 36.7, "height_m": 10.1,
+    "canopy_cover_pct": 38, "notes": "Pest damage on lower fronds",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T013", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.1005, "longitude": 101.7045, "health_score": 35,
+    "risk_class": "avoid", "diameter_cm": 43.0, "height_m": 8.5,
+    "canopy_cover_pct": 30, "notes": "Severe nutrient deficiency, stunted growth",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T014", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.0998, "longitude": 101.7055, "health_score": 28,
+    "risk_class": "avoid", "diameter_cm": 38.9, "height_m": 7.2,
+    "canopy_cover_pct": 22, "notes": "Root rot detected, canopy collapse risk",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T015", "species": "Coconut Palm (Cocos nucifera)",
+    "latitude": 3.1010, "longitude": 101.7065, "health_score": 25,
+    "risk_class": "avoid", "diameter_cm": 29.8, "height_m": 10.5,
+    "canopy_cover_pct": 20, "notes": "Bud rot suspected, no new fronds",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T016", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.0992, "longitude": 101.7040, "health_score": 22,
+    "risk_class": "avoid", "diameter_cm": 40.5, "height_m": 6.8,
+    "canopy_cover_pct": 18, "notes": "Ganoderma infection confirmed",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T017", "species": "Rubber Tree (Hevea brasiliensis)",
+    "latitude": 3.1002, "longitude": 101.7070, "health_score": 18,
+    "risk_class": "avoid", "diameter_cm": 28.3, "height_m": 12.0,
+    "canopy_cover_pct": 15, "notes": "Extensive bark necrosis, no latex production",
+    "photo_id": null, "is_demo_data": true
+  },
+  {
+    "id": "T018", "species": "Oil Palm (Elaeis guineensis)",
+    "latitude": 3.0988, "longitude": 101.7050, "health_score": 12,
+    "risk_class": "avoid", "diameter_cm": 42.1, "height_m": 5.5,
+    "canopy_cover_pct": 10, "notes": "Terminal decline, scheduled for removal",
+    "photo_id": null, "is_demo_data": true
+  }
+]

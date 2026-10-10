@@ -1,0 +1,82 @@
+[
+  {
+    "id": "R001",
+    "title": "Nutrient Deficiency — South Block",
+    "description": "Multiple trees in the south block show severe yellowing and stunted growth patterns consistent with nitrogen and potassium deficiency. Soil testing recommended.",
+    "zone": "avoid",
+    "priority": "high",
+    "status": "pending",
+    "recommendations": [
+      "Conduct comprehensive soil nutrient analysis",
+      "Apply targeted NPK fertilizer treatment",
+      "Schedule follow-up inspection in 30 days",
+      "Consider foliar spray for immediate nutrient uptake"
+    ],
+    "created_at": "2026-10-08T09:30:00Z",
+    "is_demo_data": true
+  },
+  {
+    "id": "R002",
+    "title": "Irrigation System Check — West Section",
+    "description": "Trees in the western risky zone show uneven moisture stress. The drip irrigation system may have blockages or pressure inconsistencies affecting water distribution.",
+    "zone": "risky",
+    "priority": "medium",
+    "status": "in_progress",
+    "recommendations": [
+      "Inspect drip irrigation lines for blockages",
+      "Check water pressure at distribution points",
+      "Install soil moisture sensors at 3 monitoring stations",
+      "Adjust irrigation schedule based on findings"
+    ],
+    "created_at": "2026-10-07T14:15:00Z",
+    "is_demo_data": true
+  },
+  {
+    "id": "R003",
+    "title": "Canopy Health Report — Northeast Block",
+    "description": "Routine canopy assessment confirms healthy growth patterns in the northeast block. All trees show adequate frond development and fruit bunch formation.",
+    "zone": "good",
+    "priority": "low",
+    "status": "completed",
+    "recommendations": [
+      "Continue standard maintenance schedule",
+      "Plan next routine inspection in 60 days",
+      "Document growth rates for yield forecasting"
+    ],
+    "created_at": "2026-10-05T11:00:00Z",
+    "is_demo_data": true
+  },
+  {
+    "id": "R004",
+    "title": "Ganoderma Alert — South Block",
+    "description": "Confirmed Ganoderma boninense infection on tree T016. Adjacent trees T014 and T018 also show early symptoms. Immediate containment measures required to prevent spread.",
+    "zone": "avoid",
+    "priority": "high",
+    "status": "pending",
+    "recommendations": [
+      "Isolate infected trees with soil trenching",
+      "Apply hexaconazole fungicide treatment",
+      "Remove and destroy severely infected tree T018",
+      "Monitor adjacent trees bi-weekly for 3 months",
+      "Consider replanting with disease-resistant cultivar"
+    ],
+    "created_at": "2026-10-09T16:45:00Z",
+    "is_demo_data": true
+  },
+  {
+    "id": "R005",
+    "title": "Pest Monitoring — West Section",
+    "description": "Rhinoceros beetle damage observed on lower fronds of several trees in the western section. Damage is currently moderate but could escalate without intervention.",
+    "zone": "risky",
+    "priority": "medium",
+    "status": "pending",
+    "recommendations": [
+      "Deploy pheromone traps at 50m intervals",
+      "Apply Metarhizium anisopliae biological control",
+      "Clear decaying organic matter to remove breeding sites",
+      "Schedule weekly monitoring rounds"
+    ],
+    "created_at": "2026-10-09T08:20:00Z",
+    "is_demo_data": true
+  }
+]
