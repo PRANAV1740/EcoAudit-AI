@@ -1,3 +1,4 @@
+
 /**
  * EcoAudit AI — Shared TypeScript Types
  *
@@ -5,13 +6,13 @@
  * backend/app/models/schemas.py. Keep them in sync.
  */
 
-// ── Enums ────────────────────────────────────────────────────────────────
+// Enums
 
 export type RiskClass = "good" | "risky" | "avoid";
 export type Priority = "high" | "medium" | "low";
 export type ReportStatus = "pending" | "in_progress" | "completed";
 
-// ── GPS & EXIF ───────────────────────────────────────────────────────────
+// GPS & EXIF
 
 export interface GPSCoords {
   latitude: number;
@@ -28,7 +29,7 @@ export interface ExifData {
   image_height?: number | null;
 }
 
-// ── Trees ────────────────────────────────────────────────────────────────
+// Trees
 
 export interface TreeSample {
   id: string;
@@ -45,7 +46,7 @@ export interface TreeSample {
   is_demo_data: boolean;
 }
 
-// ── Audit ────────────────────────────────────────────────────────────────
+// Audit
 
 export interface AuditSummary {
   total_trees: number;
@@ -58,7 +59,20 @@ export interface AuditSummary {
   is_demo_data: boolean;
 }
 
-// ── Photos ───────────────────────────────────────────────────────────────
+// Canopy Analysis
+
+export interface CanopyAnalysis {
+  canopy_cover_pct: number;
+  health_score: number;
+  vegetation_pixels: number;
+  total_pixels: number;
+  chlorosis_ratio: number;
+  notes: string;
+  risk_class: RiskClass;
+  method: string;
+}
+
+// Photos
 
 export interface PhotoRecord {
   id: string;
@@ -69,13 +83,14 @@ export interface PhotoRecord {
   uploaded_at: string;
   exif_data?: ExifData | null;
   has_gps: boolean;
+  analysis?: CanopyAnalysis | null;
 }
 
 export interface PhotoUploadResponse extends PhotoRecord {
   message: string;
 }
 
-// ── Action Reports ───────────────────────────────────────────────────────
+// Action Reports
 
 export interface ActionReport {
   id: string;
@@ -97,7 +112,7 @@ export interface ActionReportCreate {
   recommendations?: string[];
 }
 
-// ── GeoJSON ──────────────────────────────────────────────────────────────
+// GeoJSON
 
 export interface ZoneProperties {
   zone_type: RiskClass;
@@ -123,7 +138,7 @@ export interface TreePointProperties {
   is_demo_data: boolean;
 }
 
-// ── Health ───────────────────────────────────────────────────────────────
+// Health
 
 export interface HealthResponse {
   status: string;
@@ -132,7 +147,7 @@ export interface HealthResponse {
   services: Record<string, string>;
 }
 
-// ── UI State ─────────────────────────────────────────────────────────────
+// UI State
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 

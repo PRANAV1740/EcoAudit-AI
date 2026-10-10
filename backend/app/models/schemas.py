@@ -107,6 +107,19 @@ class AuditSummary(BaseModel):
 
 # ── Photos ───────────────────────────────────────────────────────────────
 
+
+class CanopyAnalysis(BaseModel):
+    """Computer-vision estimates derived from an uploaded image."""
+    canopy_cover_pct: float = Field(..., ge=0, le=100)
+    health_score: float = Field(..., ge=0, le=100)
+    vegetation_pixels: int = Field(..., ge=0)
+    total_pixels: int = Field(..., ge=0)
+    chlorosis_ratio: float = Field(..., ge=0, le=1)
+    notes: str
+    risk_class: RiskClass
+    method: str = "opencv_exg_heuristic"
+
+
 class PhotoRecord(BaseModel):
     id: str
     filename: str
@@ -116,17 +129,10 @@ class PhotoRecord(BaseModel):
     uploaded_at: datetime
     exif_data: Optional[ExifData] = None
     has_gps: bool = False
+    analysis: Optional[CanopyAnalysis] = None
 
 
-class PhotoUploadResponse(BaseModel):
-    id: str
-    filename: str
-    original_filename: str
-    file_size_bytes: int
-    content_type: str
-    uploaded_at: datetime
-    exif_data: Optional[ExifData] = None
-    has_gps: bool = False
+class PhotoUploadResponse(PhotoRecord):
     tree_id: Optional[str] = None
     message: str
 
