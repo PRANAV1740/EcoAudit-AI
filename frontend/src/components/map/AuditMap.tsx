@@ -1,4 +1,5 @@
-﻿"use client";
+﻿
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
@@ -47,13 +48,12 @@ export default function AuditMap({
         zoomControl: true,
       });
 
-      // CartoDB Dark Matter tiles for a sleek dark aesthetic
+      // OpenStreetMap tiles — no API key required
       L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: "abcd",
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 19,
         }
       ).addTo(map);
@@ -69,6 +69,7 @@ export default function AuditMap({
 
     return () => {
       isMounted = false;
+
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
@@ -76,7 +77,7 @@ export default function AuditMap({
     };
   }, []);
 
-  // Update Layers when data or filters change
+  // Update layers when data or filters change
   useEffect(() => {
     if (!mapLoaded || !mapInstanceRef.current) return;
 
@@ -86,7 +87,7 @@ export default function AuditMap({
       const L = (await import("leaflet")).default;
       if (!isMounted) return;
 
-      // â”€â”€ Update Zone Polygons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Update zone polygons
       if (zonesLayerGroupRef.current) {
         zonesLayerGroupRef.current.clearLayers();
 
@@ -97,20 +98,22 @@ export default function AuditMap({
               const zoneType = props.zone_type as RiskClass;
 
               // Filter check
-              if (selectedRisk !== "all" && zoneType !== selectedRisk) return;
+              if (selectedRisk !== "all" && zoneType !== selectedRisk) {
+                return;
+              }
 
               const color =
                 zoneType === "good"
                   ? "#22c55e"
                   : zoneType === "risky"
-                  ? "#f59e0b"
-                  : "#ef4444";
+                    ? "#f59e0b"
+                    : "#ef4444";
 
               const isIllustrative = props.source === "illustrative";
 
               const polygonLayer = L.geoJSON(feature, {
                 style: {
-                  color: color,
+                  color,
                   weight: 2,
                   dashArray: isIllustrative ? "4, 4" : undefined,
                   fillColor: color,
@@ -133,8 +136,14 @@ export default function AuditMap({
                     ${props.description || ""}
                   </p>
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 8px;">
-                    <div><span style="color: #64748b;">Trees:</span> <strong>${props.tree_count || "â€”"}</strong></div>
-                    <div><span style="color: #64748b;">Avg Health:</span> <strong>${props.avg_health_score || "â€”"}/100</strong></div>
+                    <div>
+                      <span style="color: #64748b;">Trees:</span>
+                      <strong>${props.tree_count || "—"}</strong>
+                    </div>
+                    <div>
+                      <span style="color: #64748b;">Avg Health:</span>
+                      <strong>${props.avg_health_score || "—"}/100</strong>
+                    </div>
                   </div>
                 </div>
               `;
@@ -153,20 +162,25 @@ export default function AuditMap({
         }
       }
 
-      // â”€â”€ Update Tree Point Markers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Update tree point markers
       if (treesLayerGroupRef.current) {
         treesLayerGroupRef.current.clearLayers();
 
         if (showTrees && trees.length > 0) {
           trees.forEach((tree) => {
-            if (selectedRisk !== "all" && tree.risk_class !== selectedRisk) return;
+            if (
+              selectedRisk !== "all" &&
+              tree.risk_class !== selectedRisk
+            ) {
+              return;
+            }
 
             const color =
               tree.risk_class === "good"
                 ? "#22c55e"
                 : tree.risk_class === "risky"
-                ? "#f59e0b"
-                : "#ef4444";
+                  ? "#f59e0b"
+                  : "#ef4444";
 
             // Custom glowing dot icon
             const customIcon = L.divIcon({
@@ -187,9 +201,12 @@ export default function AuditMap({
               iconAnchor: [8, 8],
             });
 
-            const marker = L.marker([tree.latitude, tree.longitude], {
-              icon: customIcon,
-            });
+            const marker = L.marker(
+              [tree.latitude, tree.longitude],
+              {
+                icon: customIcon,
+              }
+            );
 
             const popupHtml = `
               <div style="font-family: inherit; min-width: 220px; padding: 4px;">
@@ -232,7 +249,16 @@ export default function AuditMap({
     return () => {
       isMounted = false;
     };
-  }, [mapLoaded, geoJsonData, trees, selectedRisk, showZones, showTrees, onSelectTree, onSelectZone]);
+  }, [
+    mapLoaded,
+    geoJsonData,
+    trees,
+    selectedRisk,
+    showZones,
+    showTrees,
+    onSelectTree,
+    onSelectZone,
+  ]);
 
   return (
     <div className="relative w-full h-[620px] rounded-2xl overflow-hidden border border-border shadow-2xl">
@@ -241,31 +267,44 @@ export default function AuditMap({
       {/* Map Legend Overlay */}
       <div className="absolute bottom-4 left-4 z-20 p-3.5 rounded-xl bg-bg-card/90 backdrop-blur-md border border-border text-xs shadow-lg max-w-xs pointer-events-auto">
         <span className="text-[10px] uppercase font-bold text-text-muted tracking-wider block mb-2">
-          Zone Legend & Boundary Status
+          Zone Legend &amp; Boundary Status
         </span>
+
         <div className="space-y-1.5">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded bg-emerald-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
-              <span className="text-text-primary text-[11px]">Good (70-100)</span>
+              <span className="text-text-primary text-[11px]">
+                Good (70-100)
+              </span>
             </div>
-            <span className="text-[10px] text-text-muted font-mono">Healthy</span>
+            <span className="text-[10px] text-text-muted font-mono">
+              Healthy
+            </span>
           </div>
 
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.5)]" />
-              <span className="text-text-primary text-[11px]">Risky (40-69)</span>
+              <span className="text-text-primary text-[11px]">
+                Risky (40-69)
+              </span>
             </div>
-            <span className="text-[10px] text-text-muted font-mono">Monitor</span>
+            <span className="text-[10px] text-text-muted font-mono">
+              Monitor
+            </span>
           </div>
 
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded bg-rose-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]" />
-              <span className="text-text-primary text-[11px]">Avoid (0-39)</span>
+              <span className="text-text-primary text-[11px]">
+                Avoid (0-39)
+              </span>
             </div>
-            <span className="text-[10px] text-text-muted font-mono">Quarantine</span>
+            <span className="text-[10px] text-text-muted font-mono">
+              Quarantine
+            </span>
           </div>
         </div>
 
@@ -283,5 +322,3 @@ export default function AuditMap({
     </div>
   );
 }
-
-
